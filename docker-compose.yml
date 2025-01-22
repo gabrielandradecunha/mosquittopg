@@ -1,0 +1,58 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres_mosquitto
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_mosquitto_data:/var/lib/postgresql/data
+      - ./sql/test.sql:/sql/test.sql
+    networks:
+      - monit
+
+  mosquitto:
+    image: eclipse-mosquitto
+    hostname: mosquitto
+    container_name: mosquitto
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./mosquitto/config/pass:/mosquitto/config/pass
+    networks:
+      - monit
+
+  mosquitopg:
+    build:
+      context: .
+      dockerfile: Dockerfile 
+    container_name: mosquitopg
+    environment:
+      - MOSQUITTO_USER=${MOSQUITTO_USER}
+      - MOSQUITTO_PASSWORD=${MOSQUITTO_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=postgres
+      - DB_PORT=5434
+    volumes:
+      - .:/app
+      - .env:/app/.env
+    depends_on:
+      - postgres
+      - mosquitto
+    networks:
+      - monit
+
+volumes:
+  postgres_mosquitto_data:
+    driver: local
+
+networks:
+  monit:
+    driver: bridge

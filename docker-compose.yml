@@ -27,27 +27,27 @@ services:
     networks:
       - monit
 
-  mosquitopg:
-    build:
-      context: .
-      dockerfile: Dockerfile 
-    container_name: mosquitopg
-    environment:
-      - MOSQUITTO_USER=${MOSQUITTO_USER}
-      - MOSQUITTO_PASSWORD=${MOSQUITTO_PASSWORD}
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_HOST=postgres
-      - DB_PORT=5434
-    volumes:
-      - .:/app
-      - .env:/app/.env
-    depends_on:
-      - postgres
-      - mosquitto
-    networks:
-      - monit
+  # mosquitopg:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile 
+  #   container_name: mosquitopg
+  #   environment:
+  #     - MOSQUITTO_USER=${MOSQUITTO_USER}
+  #     - MOSQUITTO_PASSWORD=${MOSQUITTO_PASSWORD}
+  #     - DB_NAME=${DB_NAME}
+  #     - DB_USER=${DB_USER}
+  #     - DB_PASSWORD=${DB_PASSWORD}
+  #     - DB_HOST=postgres
+  #     - DB_PORT=5434
+  #   volumes:
+  #     - .:/app
+  #     - .env:/app/.env
+  #   depends_on:
+  #     - postgres
+  #     - mosquitto
+  #   networks:
+  #     - monit
 
 volumes:
   postgres_mosquitto_data:

@@ -2,4 +2,4 @@
 
 # generate password in container cmd
 
-sudo docker exec -it mosquitto mosquitto_passwd -c /mosquitto/config/pass gabriel
+sudo docker exec -it mosquitto mosquitto_passwd -c /mosquitto/config/pass teste

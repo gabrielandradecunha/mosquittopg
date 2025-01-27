@@ -1,20 +1,28 @@
 #!/bin/bash
 
-# cmd resume
+# commands to easy and test setup 
 
+# general python config
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt -v
 
-mv .env.examble .env
+# .env for credentials
+mv .env.example .env
 
-touch mosquitto/config/pass
+# mosquitto
+cd mosquitto/config/
+touch pass
+cd ../../
 sudo chmod 0700 mosquitto/config/pass
 docker-compose up -d
+sudo ./genpass.sh
 
 # db
 sudo chmod -R +x sql/
-sudo sql/create_table.sh
-sudo sql/insert_table.sh
+sudo sql/setupdb.sh
 
 python3 main.py
+
+# publish test topic (optional)
+# sudoo ./pub.sh
